@@ -1,3 +1,28 @@
+document.addEventListener('DOMContentLoaded', (event) => {
+  // Reproducir música al cargar la página
+  var audio = new Audio('sound/television-simpsons.mp3');
+  audio.play();
+
+
+    // Obtener el botón
+    var botonMusica = document.getElementById('botonMusica');
+  
+    // Definir el comportamiento al hacer clic en el botón
+    var musicaActiva = false;
+    botonMusica.addEventListener('click', function() {
+      if (musicaActiva) {
+        audio.pause();
+        musicaActiva = false;
+        botonMusica.innerHTML = 'REANUDAR MUSICA';
+      } else {
+        audio.play();
+        musicaActiva = true;
+        botonMusica.innerHTML = 'PAUSAR MUSICA';
+      }
+    });
+  });
+
+
 // Arreglo que contiene las intrucciones del juego 
 var instrucciones = [];
 var instrucciones = [
@@ -112,34 +137,31 @@ function moverEnDireccion(direccion) {
 
   // Mueve pieza hacia abajo, reemplazándola con la blanca
   if (direccion === codigosDireccion.ABAJO) {
-      nuevaFilaPiezaVacia = filaVacia - 1;
-      nuevaColumnaPiezaVacia = columnaVacia;
+    nuevaFilaPiezaVacia = filaVacia - 1;
+    nuevaColumnaPiezaVacia = columnaVacia;
   } else if (direccion === codigosDireccion.ARRIBA) {
-      nuevaFilaPiezaVacia = filaVacia + 1;
-      nuevaColumnaPiezaVacia = columnaVacia;
+    nuevaFilaPiezaVacia = filaVacia + 1;
+    nuevaColumnaPiezaVacia = columnaVacia;
   } else if (direccion === codigosDireccion.DERECHA) {
-      nuevaFilaPiezaVacia = filaVacia;
-      nuevaColumnaPiezaVacia = columnaVacia - 1;
+    nuevaFilaPiezaVacia = filaVacia;
+    nuevaColumnaPiezaVacia = columnaVacia - 1;
   } else if (direccion === codigosDireccion.IZQUIERDA) {
-      nuevaFilaPiezaVacia = filaVacia;
-      nuevaColumnaPiezaVacia = columnaVacia + 1;
+    nuevaFilaPiezaVacia = filaVacia;
+    nuevaColumnaPiezaVacia = columnaVacia + 1;
   }
 
+  if (posicionValida(nuevaFilaPiezaVacia, nuevaColumnaPiezaVacia)) {
+    reproducirSonidoDeslizamiento(); // Reproduce el sonido de deslizamiento cuando sea posible mover las fichas
+    intercambiarPosiciones(filaVacia, columnaVacia, nuevaFilaPiezaVacia, nuevaColumnaPiezaVacia);
+    actualizarPosicionVacia(nuevaFilaPiezaVacia, nuevaColumnaPiezaVacia);
+    agregarUltimoMovimiento(direccion);
+  }
+}
 
-  /* A continuación se chequea si la nueva posición es válida, si lo es, se intercambia. 
-  Para que esta parte del código funcione correctamente deberás haber implementado 
-  las funciones posicionValida, intercambiarPosicionesGrilla y actualizarPosicionVacia */
-
-    if (posicionValida(nuevaFilaPiezaVacia, nuevaColumnaPiezaVacia)) {
-        intercambiarPosiciones(filaVacia, columnaVacia, nuevaFilaPiezaVacia, nuevaColumnaPiezaVacia);
-        actualizarPosicionVacia(nuevaFilaPiezaVacia, nuevaColumnaPiezaVacia);
-
-      //movimientos.push(direccion);
-      agregarUltimoMovimiento(direccion);
-
-  //COMPLETAR: Agregar la dirección del movimiento al arreglo de movimientos
-
-    }
+// Función para reproducir el sonido de deslizamiento
+function reproducirSonidoDeslizamiento() {
+  var audioDeslizamiento = document.getElementById('audioDeslizamiento');
+  audioDeslizamiento.play();
 }
 
 
